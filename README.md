@@ -13,5 +13,5 @@ Adds avatar status indicators everywhere Discord doesn't. Also adds typing and m
 
 ## Preview
 
-![Status Everywhere](screenshots/preview-1.png)
-![Status Everywhere](screenshots/preview-2.gif)
+![Status Everywhere](screenshots/preview-1.gif)
+![Status Everywhere](screenshots/preview-2.png)
