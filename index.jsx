@@ -75,6 +75,8 @@ module.exports = class StatusEverywhere extends Plugin {
         const res = renderer(args);
         if (res.type !== 'img') return res;
 
+        const guildId = getModule('getLastSelectedGuildId').getGuildId();
+
         if (this.settings.get('showTypingStatus', true)) {
           const fluxWrapper = Flux.connectStores([ TypingModule ], () => ({ isTyping: TypingModule.isTyping(message.channel_id, message.author.id) }));
 
@@ -83,7 +85,7 @@ module.exports = class StatusEverywhere extends Plugin {
               isTyping={isTyping}
               userId={message.author.id}
               size={Avatar.Sizes.SIZE_40}
-              onClick={e => this.openUserPopout(e, message.author.id)}
+              onClick={e => this.openUserPopout(e, message.author.id, guildId)}
             />
           );
 
@@ -93,7 +95,7 @@ module.exports = class StatusEverywhere extends Plugin {
         return <Avatar {...res.props}
           userId={message.author.id}
           size={Avatar.Sizes.SIZE_40}
-          onClick={e => this.openUserPopout(e, message.author.id)}
+          onClick={e => this.openUserPopout(e, message.author.id, guildId)}
         />;
       };
 
