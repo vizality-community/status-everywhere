@@ -12,7 +12,7 @@ module.exports = class StatusEverywhere extends Plugin {
       render: Settings
     });
 
-    this.injectStyles('styles/main.css');
+    this.injectStyles('styles/main.scss');
     this._patchAvatars();
     this._patchMessageHeaders();
   }

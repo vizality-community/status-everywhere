@@ -1,0 +1,17 @@
+.message-2qnXI6 {
+  .avatar-1BDn8e {
+    overflow: visible;
+  }
+}
+
+[vz-webhook],
+[vz-local] {
+  .avatar-1BDn8e {
+    foreignObject {
+      mask: url(#svg-mask-avatar-default);
+    }
+    rect {
+      display: none;
+    }
+  }
+}
