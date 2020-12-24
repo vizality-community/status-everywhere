@@ -1,11 +1,10 @@
 {
   "name": "Status Everywhere",
-  "version": "1.0.2",
+  "description": "Adds avatar status indicators everywhere Discord doesn't. Also adds typing and mobile indicators, which can optionally be turned off.",
+  "version": "1.1.0",
+  "license": "MIT",
   "author": {
     "name": "dperolio",
     "id": "97549189629636608"
-  },
-  "description": "Adds avatar status indicators everywhere Discord doesn't. Also adds typing and mobile indicators, which can optionally be turned off.",
-  "icon": "assets/icon.png",
-  "license": "MIT"
+  }
 }

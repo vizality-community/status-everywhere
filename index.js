@@ -1,11 +1,12 @@
-const { getModule, getModuleByDisplayName, Flux } = require('@vizality/webpack');
-const { patch, unpatch } = require('@vizality/patcher');
-const { Plugin } = require('@vizality/entities');
-const { React } = require('@vizality/react');
+import React from 'react';
 
-const Settings = require('./components/Settings');
+import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
+import { patch, unpatch } from '@vizality/patcher';
+import { Plugin } from '@vizality/core';
 
-module.exports = class StatusEverywhere extends Plugin {
+import Settings from './components/Settings';
+
+export default class StatusEverywhere extends Plugin {
   onStart () {
     vizality.api.settings.registerAddonSettings({
       id: this.addonId,
@@ -117,4 +118,4 @@ module.exports = class StatusEverywhere extends Plugin {
       position: 'right'
     }, `user-popout-${userId}`);
   }
-};
+}

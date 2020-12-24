@@ -1,7 +1,8 @@
-const { settings: { SwitchItem } } = require('@vizality/components');
-const { React, React: { memo } } = require('@vizality/react');
+import React, { memo } from 'react';
 
-module.exports = memo(({ getSetting, toggleSetting }) => {
+import { SwitchItem } from '@vizality/components/settings';
+
+export default memo(({ getSetting, toggleSetting }) => {
   return (
     <div>
       <SwitchItem
