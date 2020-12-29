@@ -3,12 +3,13 @@ import React from 'react';
 import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
 import { Plugin } from '@vizality/core';
+import api from '@vizality/api';
 
 import Settings from './components/Settings';
 
 export default class StatusEverywhere extends Plugin {
   onStart () {
-    vizality.api.settings.registerAddonSettings({
+    api.settings.registerAddonSettings({
       id: this.addonId,
       render: Settings
     });
@@ -21,6 +22,7 @@ export default class StatusEverywhere extends Plugin {
   onStop () {
     unpatch('status-everywhere-avatars');
     unpatch('status-everywhere-chat-avatars');
+    api.settings.unregisterAddonSettings(this.addonId);
   }
 
   _patchAvatars () {
@@ -34,6 +36,7 @@ export default class StatusEverywhere extends Plugin {
 
       const id = userId || src.split('/')[4];
       const sz = props.size.includes('128') ? Avatar.Sizes.SIZE_120 : size;
+
       const fluxWrapper = Flux.connectStores([ StatusModule ], () =>
         ({ status: StatusModule.getStatus(id), isMobile: StatusModule.isMobileOnline(id) }));
 
@@ -77,20 +80,28 @@ export default class StatusEverywhere extends Plugin {
         if (res.type !== 'img') return res;
 
         const guildId = getModule('getLastSelectedGuildId').getGuildId();
+        const currentUserId = getModule('getId').getId();
 
         if (this.settings.get('showTypingStatus', true)) {
-          const fluxWrapper = Flux.connectStores([ TypingModule ], () => ({ isTyping: TypingModule.isTyping(message.channel_id, message.author.id) }));
+          if (!this.settings.get('showSelfTypingStatus', true) &&
+              /*
+               * Not caching getModule('getId').getId() in case the user logs
+               * out and logs into another account
+               */
+              message.author.id !== currentUserId) {
+            const fluxWrapper = Flux.connectStores([ TypingModule ], () => ({ isTyping: TypingModule.isTyping(message.channel_id, message.author.id) }));
 
-          const AvatarWithTyping = fluxWrapper(({ isTyping }) =>
-            <Avatar {...res.props}
-              isTyping={isTyping}
-              userId={message.author.id}
-              size={Avatar.Sizes.SIZE_40}
-              onClick={e => this.openUserPopout(e, message.author.id, guildId)}
-            />
-          );
+            const AvatarWithTyping = fluxWrapper(({ isTyping }) =>
+              <Avatar {...res.props}
+                isTyping={isTyping}
+                userId={message.author.id}
+                size={Avatar.Sizes.SIZE_40}
+                onClick={e => this.openUserPopout(e, message.author.id, guildId)}
+              />
+            );
 
-          return <AvatarWithTyping />;
+            return <AvatarWithTyping />;
+          }
         }
 
         return <Avatar {...res.props}

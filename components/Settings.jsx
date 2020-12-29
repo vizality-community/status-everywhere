@@ -1,10 +1,20 @@
 import React, { memo } from 'react';
 
-import { SwitchItem } from '@vizality/components/settings';
+import { SwitchItem, FormTitle } from '@vizality/components/settings';
 
 export default memo(({ getSetting, toggleSetting }) => {
   return (
     <div>
+      <FormTitle>Me</FormTitle>
+      <SwitchItem
+        note='Shows whether you are currently typing. Client-side only, meaning others who can see you typing normally still will.'
+        value={getSetting('showSelfTypingStatus', true)}
+        onChange={() => toggleSetting('showSelfTypingStatus')}
+        disabled={!getSetting('showSelfStatus', true)}
+      >
+        Show My Typing Status
+      </SwitchItem>
+      <FormTitle>General</FormTitle>
       <SwitchItem
         note='Shows whether the user is currently typing. Multiple typing animations showing at once may cause performance issues.'
         value={getSetting('showTypingStatus', true)}
