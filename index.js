@@ -2,14 +2,13 @@ import React from 'react';
 
 import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
-import { Plugin } from '@vizality/core';
-import api from '@vizality/api';
+import { Plugin } from '@vizality/entities';
 
 import Settings from './components/Settings';
 
 export default class StatusEverywhere extends Plugin {
   onStart () {
-    api.settings.registerAddonSettings({
+    vizality.api.settings.registerAddonSettings({
       id: this.addonId,
       render: Settings
     });
@@ -22,7 +21,7 @@ export default class StatusEverywhere extends Plugin {
   onStop () {
     unpatch('status-everywhere-avatars');
     unpatch('status-everywhere-chat-avatars');
-    api.settings.unregisterAddonSettings(this.addonId);
+    vizality.api.settings.unregisterAddonSettings(this.addonId);
   }
 
   _patchAvatars () {
