@@ -118,7 +118,7 @@ export default class StatusEverywhere extends Plugin {
 
   // @todo Make this a Discord utility or popout API thing.
   openUserPopout (e, userId, guildId) {
-    const UserPopout = getModuleByDisplayName('UserPopout');
+    const UserPopout = getModuleByDisplayName('ConnectedUserPopout');
     const PopoutDispatcher = getModule('openPopout');
 
     PopoutDispatcher.openPopout(e.target, {
