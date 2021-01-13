@@ -4,24 +4,16 @@ import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
 import { Plugin } from '@vizality/entities';
 
-import Settings from './components/Settings';
-
 export default class StatusEverywhere extends Plugin {
-  onStart () {
-    vizality.api.settings.registerAddonSettings({
-      id: this.addonId,
-      render: Settings
-    });
-
+  start () {
     this.injectStyles('styles/main.scss');
     this._patchAvatars();
     this._patchMessageHeaders();
   }
 
-  onStop () {
+  stop () {
     unpatch('status-everywhere-avatars');
     unpatch('status-everywhere-chat-avatars');
-    vizality.api.settings.unregisterAddonSettings(this.addonId);
   }
 
   _patchAvatars () {
