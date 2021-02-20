@@ -74,12 +74,9 @@ export default class StatusEverywhere extends Plugin {
         const currentUserId = getModule('getId').getId();
 
         if (this.settings.get('showTypingStatus', true)) {
-          if (!this.settings.get('showSelfTypingStatus', true) &&
-              /*
-               * Not caching getModule('getId').getId() in case the user logs
-               * out and logs into another account
-               */
-              message.author.id !== currentUserId) {
+          if (this.settings.get('showSelfTypingStatus', true) ||
+             (!this.settings.get('showSelfTypingStatus', true) && message.author.id !== currentUserId)
+          ) {
             const fluxWrapper = Flux.connectStores([ TypingModule ], () => ({ isTyping: TypingModule.isTyping(message.channel_id, message.author.id) }));
 
             const AvatarWithTyping = fluxWrapper(({ isTyping }) =>
@@ -108,7 +105,7 @@ export default class StatusEverywhere extends Plugin {
     });
   }
 
-  // @todo Make this a Discord utility or popout API thing.
+  // @todo Make this a Discord utility or popout API thing in Vizality core.
   openUserPopout (e, userId, guildId) {
     const UserPopout = getModuleByDisplayName('ConnectedUserPopout');
     const PopoutDispatcher = getModule('openPopout');

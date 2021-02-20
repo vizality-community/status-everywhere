@@ -1,7 +1,7 @@
 {
   "name": "Status Everywhere",
   "description": "Adds avatar status indicators everywhere Discord doesn't. Also adds typing and mobile indicators, which can optionally be turned off.",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "license": "MIT",
   "author": {
     "name": "dperolio",
