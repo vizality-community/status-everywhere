@@ -53,7 +53,11 @@ export default class StatusEverywhere extends Plugin {
   _patchMessageHeaders () {
     const AvatarModule = getModule('AnimatedAvatar');
     const TypingModule = getModule('isTyping');
-    const MessageHeader = getModule('MessageTimestamp');
+    const MessageHeader = getModule((m) =>
+      (typeof m.default === "function" ? m.default : null)
+        ?.toString()
+        .includes("showTimestampOnHover")
+    );
     const Avatar = AvatarModule.default;
 
     patch('status-everywhere-chat-avatars', MessageHeader, 'default', ([ props ], res) => {
