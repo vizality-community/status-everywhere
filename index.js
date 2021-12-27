@@ -22,8 +22,9 @@ export default class StatusEverywhere extends Plugin {
     const Avatar = AvatarModule.default;
 
     patch('status-everywhere-avatars', AvatarModule, 'default', ([ props ], res) => {
-      const { status, size, userId, src } = props;
-      if (status || size.includes('100')) return res;
+      const { className, status, size, userId, src } = props;
+      if (className == "icon-VpMf1J" || className == "creator-1ZlRzz" || status || size.includes("100"))
+        return res;
 
       const id = userId || src.split('/')[4];
       const sz = props.size.includes('128') ? Avatar.Sizes.SIZE_120 : size;
