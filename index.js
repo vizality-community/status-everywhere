@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
+import { getModule, Flux } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
 import { Plugin } from '@vizality/entities';
+import { open } from "@vizality/src/core/modules/modal";
 
 export default class StatusEverywhere extends Plugin {
   start () {
@@ -112,14 +113,15 @@ export default class StatusEverywhere extends Plugin {
 
   // @todo Make this a Discord utility or popout API thing in Vizality core.
   openUserPopout (e, userId, guildId) {
-    const UserPopout = getModuleByDisplayName('ConnectedUserPopout');
-    const PopoutDispatcher = getModule('openPopout');
+    const UserPopout = getModule(
+      (m) => m.default?.type?.displayName === "UserPopoutContainer"
+    ).default;
+    if (!UserPopout || !open) return;
 
-    PopoutDispatcher.openPopout(e.target, {
-      render: props => <UserPopout {...props} userId={userId} guildId={guildId} />,
-      closeOnScroll: false,
-      shadow: false,
-      position: 'right'
-    }, `user-popout-${userId}`);
+    open(() => (
+      <div className="userPopoutAvatar-1j4sf5">
+        <UserPopout userId={userId} guildId={guildId} />
+      </div>
+    ));
   }
 }
