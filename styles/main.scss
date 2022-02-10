@@ -1,12 +1,12 @@
-.message-2qnXI6 {
-  .avatar-1BDn8e {
+.message-2CShn3 {
+  .avatar-2e8lTP {
     overflow: visible;
   }
 }
 
 [vz-webhook],
 [vz-local] {
-  .avatar-1BDn8e {
+  .avatar-2e8lTP {
     foreignObject {
       mask: url(#svg-mask-avatar-default);
     }
@@ -14,4 +14,10 @@
       display: none;
     }
   }
+}
+
+.userPopoutAvatar-1j4sf5 {
+  position: absolute;
+  bottom: -410px;
+  left: -110px;
 }

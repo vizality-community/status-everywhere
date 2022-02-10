@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { getModule, getModuleByDisplayName, Flux } from '@vizality/webpack';
+import { getModule, Flux } from '@vizality/webpack';
 import { patch, unpatch } from '@vizality/patcher';
 import { Plugin } from '@vizality/entities';
+import { open } from "@vizality/src/core/modules/modal";
 
 export default class StatusEverywhere extends Plugin {
   start () {
@@ -22,8 +23,9 @@ export default class StatusEverywhere extends Plugin {
     const Avatar = AvatarModule.default;
 
     patch('status-everywhere-avatars', AvatarModule, 'default', ([ props ], res) => {
-      const { status, size, userId, src } = props;
-      if (status || size.includes('100')) return res;
+      const { className, status, size, userId, src } = props;
+      if (className == "icon-VpMf1J" || className == "creator-1ZlRzz" || status || size.includes("100"))
+        return res;
 
       const id = userId || src.split('/')[4];
       const sz = props.size.includes('128') ? Avatar.Sizes.SIZE_120 : size;
@@ -53,7 +55,11 @@ export default class StatusEverywhere extends Plugin {
   _patchMessageHeaders () {
     const AvatarModule = getModule('AnimatedAvatar');
     const TypingModule = getModule('isTyping');
-    const MessageHeader = getModule('MessageTimestamp');
+    const MessageHeader = getModule((m) =>
+      (typeof m.default === "function" ? m.default : null)
+        ?.toString()
+        .includes("showTimestampOnHover")
+    );
     const Avatar = AvatarModule.default;
 
     patch('status-everywhere-chat-avatars', MessageHeader, 'default', ([ props ], res) => {
@@ -107,14 +113,15 @@ export default class StatusEverywhere extends Plugin {
 
   // @todo Make this a Discord utility or popout API thing in Vizality core.
   openUserPopout (e, userId, guildId) {
-    const UserPopout = getModuleByDisplayName('ConnectedUserPopout');
-    const PopoutDispatcher = getModule('openPopout');
+    const UserPopout = getModule(
+      (m) => m.default?.type?.displayName === "UserPopoutContainer"
+    ).default;
+    if (!UserPopout || !open) return;
 
-    PopoutDispatcher.openPopout(e.target, {
-      render: props => <UserPopout {...props} userId={userId} guildId={guildId} />,
-      closeOnScroll: false,
-      shadow: false,
-      position: 'right'
-    }, `user-popout-${userId}`);
+    open(() => (
+      <div className="userPopoutAvatar-1j4sf5">
+        <UserPopout userId={userId} guildId={guildId} />
+      </div>
+    ));
   }
 }
